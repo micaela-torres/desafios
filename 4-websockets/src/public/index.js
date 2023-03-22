@@ -1,9 +1,9 @@
 const socket = io("http://localhost:8080")
 
-socket.on('products', async product => {
+socket.on("products", async product => {
     const html = await makeHtmlCards(product);
-    
     document.querySelector("products").innerHTML = html;
+    
 });
 const makeHtmlCards = async (products) => {
 
