@@ -2,7 +2,7 @@ import ProductManager from "../model/product.container.js";
 import { errorResponse, successResponse } from "../utils/api.js";
 import { codeValidation, validationProducts } from "../utils/validations.js";
 
-const productManager = new ProductManager("./src/data/mongoose.js");
+const productManager = new ProductManager("./src/data/products.json");
 
 class ProductsController {
 

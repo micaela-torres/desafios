@@ -4,7 +4,7 @@ import ProductManager from "./model/product.container.js";
 
 const PORT = process.env.PORT || 8080;
 
-const productManager = new ProductManager("./src/data/mongoose.js");
+const productManager = new ProductManager("./src/data/products.json");
 
 // SERVER
 const server = app.listen(PORT, () => {

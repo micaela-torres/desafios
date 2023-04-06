@@ -3,7 +3,7 @@ import ProductManager from "../model/product.container.js";
 import ProductsController from "../controller/product.controller.js";
 
 const viewsRoute = Router();
-const productManager = new ProductManager("./src/data/mongoose.js")
+const productManager = new ProductManager("./src/data/products.json")
 const products = await productManager.getProducts();
 
 viewsRoute.get('/', async (req, res, next) => {

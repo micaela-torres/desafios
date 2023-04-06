@@ -1,6 +1,6 @@
 import fs from "fs";
 import { randomUUID } from "crypto";
-
+ 
 
 
 export default class ProductManager {
