@@ -1,0 +1,22 @@
+<section class="container">
+    <h2 class="container mt-5">{{title}}</h2>
+    {{#if showProducts}}
+    <div class="container row">
+        {{#each products}}
+        <div class="card-group">
+            <div class="card m-5" style="width: 5rem;">
+                <img src={{this.thumbnails}} class="card-img-top" alt="" />
+                <div class="card-body">
+                    <h5 class="card-title">{{this.title}}</h5>
+                    <p class="card-text">{{this.description}}</p>
+                    <p class="card-title">Precio: ${{this.price}}</p>
+                    <p class="card-title">Marca: {{this.category}}</p>
+                    <a href="#" class="btn btn-outline-info">Comprar</a>
+                    <p class="card-text"><small class="text-muted">Codigo: {{this.code}}</small></p>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+    {{/if}}
+</section>
