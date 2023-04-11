@@ -1,0 +1,49 @@
+<form id="formUpload" action="/api/inventoryupload" method="post">
+
+    <div class="form-group">
+        <label for="name">Producto</label>
+        <input id="name" class="form-control" type="text" name="title" placeholder="iNGRESE EL NOMBRE DEL PRODUCTO" required />
+    </div>
+
+    <div class="form-group">
+        <label for="price">Precio</label>
+        <input id="price" class="form-control" type="number" step="0.01" name="price" placeholder="INGRESE EL PRECIO DEL PRODUCTO" required />
+    </div>
+
+    <div class="form-group">
+        <label for="code">Codigo de producto</label>
+        <input id="code" class="form-control" type="text" name="code" placeholder="INGRESE EL CODIGO DEL PRODUCTO" />
+    </div>
+
+    <div class="form-group">
+        <label for="stock">Indique el stock</label>
+        <input id="stock" class="form-control" type="number" name="stock" placeholder="INGRESE EL STOCK DEL PRODUCTO" />
+    </div>
+
+    <div class="form-check">
+        <label class="form-check-label" for="status">
+            Status
+        </label>
+        <input class="form-check-input" name="status" type="checkbox" value="on" placeholder="status" id="status"
+            checked>
+    </div>
+
+    <div class="form-group">
+        <label for="category">Indicar marca del producto: </label>
+        <input id="category" class="form-control" type="text" name="category" placeholder="INGRESE LA MARCA DEL PRODUCTO" />
+    </div>
+
+    <div class="form-group">
+        <label for="description">Indique una descripcion</label>
+        <input id="description" class="form-control" type="text" name="description" placeholder="INGRESE UNA DESCRIPCION DEL PRODUCTO" />
+    </div>
+
+    <div class="form-group">
+        <label for="thumbnails">Foto URL</label>
+        <input id="thumbnails" class="form-control" type="url" name="thumbnails" placeholder="INGRESE URL DEL PRODUCTO" />
+    </div>
+
+    <button class="btn btn-outline-info">Guardar</button>
+</form>
+
+<script src="/index.js"></script>

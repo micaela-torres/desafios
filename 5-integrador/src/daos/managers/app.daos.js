@@ -1,0 +1,1 @@
+export { default as ProductManager } from './products/product.container.js';
