@@ -1,0 +1,2 @@
+export const CLIENTID_GIT ='Iv1.3da744d0448f60e8'
+export const CLIENTSCR_GIT = "37fe03a13bcf096201bb0084ec76e63125111e2a";
