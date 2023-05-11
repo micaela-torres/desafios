@@ -1,0 +1,10 @@
+auth
+JWT_PRIVATE_KEY = "mariposa";
+COOKIE_KEY = "micaela-torres";
+
+basededatos
+MONGODB_CNX_STR = "mongodb://localhost:27017/proyectofinal";
+
+git
+CLIENTID_GIT ='Iv1.3da744d0448f60e8'
+CLIENTSCR_GIT = "37fe03a13bcf096201bb0084ec76e63125111e2a";
