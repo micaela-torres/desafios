@@ -1,0 +1,38 @@
+import mongoose from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
+import { DaoMongoose } from "./defaultDaoMongoose.js";
+
+export const SchemaProduts = new mongoose.Schema(
+  {
+    id: { type: String, require: true },
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    price: { type: Number, required: true, min: 0 },
+    thumbnail: { type: Array, required: true },
+    code: {
+      type: String,
+      required: true,
+      unique: true,
+      validate: {
+        validator: function (value) {
+          return value.length <= 6;
+        },
+        message: "Code must not exceed 6 characters.",
+      },
+    },
+    stock: { type: Number, required: true, min: 0 },
+    status: { type: Boolean, required: true },
+    category: {
+      type: String,
+      required: true,
+      enum: ["AFA", "CLUBS", "+SELECCIONES", "RETRO", "OTROS", "PERLITAS"],
+    },
+  },
+  { versionKey: false }
+);
+
+SchemaProduts.plugin(mongoosePaginate);
+
+const productModel = mongoose.model("products", SchemaProduts);
+
+export const pmg = new DaoMongoose(productModel);
