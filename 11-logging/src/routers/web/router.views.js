@@ -1,13 +1,17 @@
 import { Router } from "express";
 import {
   cartView,
+  chatView,
   loginView,
   newProductView,
   productView,
   regisView,
+  ticketView,
 } from "../../controllers/views/controller.all.views.js";
 import { authJwtView } from "../../mid/authentication.js";
 import { soloRol } from "../../mid/authorization.js";
+import { PATH_CHAT } from "../../config/config.js";
+import { mmg } from "../../dao/mongoose/messages.dao.mg.js";
 
 export const viewsRouter = Router();
 
@@ -29,3 +33,10 @@ viewsRouter.get("/login", loginView);
 
 //Register
 viewsRouter.get("/register", regisView);
+
+//Chat
+viewsRouter.get("/chat", soloRol("user"), chatView);
+
+//Ticket
+
+viewsRouter.get("/ticket/:tid", ticketView);

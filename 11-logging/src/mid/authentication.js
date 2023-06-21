@@ -2,9 +2,8 @@ import passport from "passport";
 import { Strategy } from "passport-local";
 import { Strategy as gitStrategy } from "passport-github2";
 import { ExtractJwt, Strategy as jwtStrategy } from "passport-jwt";
-import { manejoDeErrores } from "./error.js";
 import { bcCompare } from "../utils/hasher.js";
-import { ErrorAuth } from "./errorauth.js";
+import { ErrorAuthothentication } from "../models/error/errors.model.js";
 import { CLIENTID_GIT, CLIENTSCR_GIT } from "../config/config.js";
 import { JWT_PRIVATE_KEY } from "../config/config.js";
 import { encriptarJWT } from "../utils/cripto.js";
@@ -16,12 +15,12 @@ import { userService } from "../services/users.service.js";
 passport.use(
   "local",
   new Strategy({ usernameField: "email" }, async (username, password, done) => {
-    console.log(username);
     const user = await userRepository.findOne({
       email: username,
     });
-    if (!user) return done(new ErrorAuth());
-    if (!bcCompare(password, user.password)) return done(new ErrorAuth());
+    if (!user) return done(new ErrorAuthothentication());
+    if (!bcCompare(password, user.password))
+      return done(new ErrorAuthothentication());
     await cmg.delAllProductsInCart(user.cart);
 
     done(null, {
@@ -54,7 +53,7 @@ passport.use(
           role:
             profile.email === "adminCoder@coder.com"
               ? "admin"
-              : profile.email === "micatorres@coder.com"
+              : profile.email === "joaquin.bidart@blackid.app"
               ? "admin"
               : "user",
         };
@@ -67,13 +66,15 @@ passport.use(
           });
           await cmg.delAllProductsInCart(user.cart);
           req.session.user = user;
+          req.user = user;
         }
       } catch {
-        done(new ErrorAuth());
+        done(new ErrorAuthothentication());
       }
       done(null, {
         name: req.session.user.first_name + " " + req.session.user.last_name,
         email: req.session.user.email,
+        role: req.session.user.role,
         age: req.session.user.age,
         cart: req.session.user.cart,
       });
@@ -128,7 +129,7 @@ export const authGithub = passport.authenticate("git", {
 });
 export function anthGithub_CB(req, res, next) {
   passport.authenticate("git", (error, user, info) => {
-    if (error || !user) return next(new ErrorAuth());
+    if (error || !user) return next(new ErrorAuthothentication());
     res.cookie("jwt_authorization", encriptarJWT(user), {
       signed: true,
       httpOnly: true,
@@ -139,7 +140,7 @@ export function anthGithub_CB(req, res, next) {
 
 export function authJwtApi(req, res, next) {
   passport.authenticate("jwt", (error, jwt_payload, info) => {
-    if (error || !jwt_payload) return next(new ErrorAuth());
+    if (error || !jwt_payload) return next(new ErrorAuthothentication());
     req.user = jwt_payload;
     next();
   })(req, res, next);

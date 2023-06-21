@@ -1,6 +1,6 @@
 import { cartDao } from "../dao/index.js";
 
-export class cartmodelRepository {
+export class CartModelRepository {
   #dao;
   constructor(dao) {
     this.#dao = dao;
@@ -14,8 +14,8 @@ export class cartmodelRepository {
     return this.#dao.add(datac);
   }
 
-  async getCartbyId(datac) {
-    return this.#dao.getCartbyId(datac);
+  async getCartById(datac) {
+    return this.#dao.getCartById(datac);
   }
 
   async getProductsInCartById(datac) {
@@ -26,8 +26,8 @@ export class cartmodelRepository {
     return this.#dao.addProductInCart(datac, datap, dataq);
   }
 
-  async updProductinCart(datac, datap, info) {
-    return this.#dao.updProductinCart(datac, datap, info);
+  async updProductInCart(datac, datap, info) {
+    return this.#dao.updProductInCart(datac, datap, info);
   }
 
   async delProductInCart(datac, datap) {
@@ -47,4 +47,4 @@ export class cartmodelRepository {
   }
 }
 
-export const cartRepository = new cartmodelRepository(cartDao);
+export const cartRepository = new CartModelRepository(cartDao);

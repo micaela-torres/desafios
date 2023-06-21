@@ -1,3 +1,5 @@
+import { ErrorNotFound } from "../../models/error/errors.model.js";
+
 function toPojo(object) {
   return JSON.parse(JSON.stringify(object));
 }
@@ -11,7 +13,7 @@ function linker(str, apg, sel) {
   } else if (sel === "next") {
     return nextPage;
   }
-  throw new Error("invalid page");
+  throw new ErrorNotFound("invalid page");
 }
 
 export class DaoMongoose {
@@ -21,9 +23,7 @@ export class DaoMongoose {
   }
 
   async add(element) {
-    console.log(element);
     const pojo = toPojo(await this.#modelDb.create(element));
-    console.log(pojo);
     delete pojo._id;
     return pojo;
   }
@@ -33,6 +33,7 @@ export class DaoMongoose {
       .findOne(condition)
       .select({ _id: 0 })
       .lean();
+    if (!serched) throw new ErrorNotFound("Not Found");
     return serched;
   }
 
@@ -41,7 +42,7 @@ export class DaoMongoose {
       .findOne({ id: condition })
       .select({ _id: 0 })
       .lean();
-    if (!serched) throw new Error("Not Found");
+    if (!serched) throw new ErrorNotFound("Not Found");
     return serched;
   }
 
@@ -55,15 +56,15 @@ export class DaoMongoose {
   }
 
   async updateOne(condition, data) {
-    const finder = await this.#modelDb.findOneById(condition);
-    if (!finder) {
-      throw new Error("Not Found");
-    }
-    const updated = await this.#modelDb
-      .findByIdAndUpdate(finder._id, data)
+    const updater = await this.#modelDb
+      .findOneAndUpdate({ id: condition }, data, {
+        new: true,
+        projection: { _id: 0 },
+      })
       .lean();
-    delete updated._id;
-    return updated;
+    if (!updater) throw new ErrorNotFound("NOT FOUND");
+    delete updater._id;
+    return updater;
   }
 
   async updateMany(condition, data) {
@@ -74,7 +75,7 @@ export class DaoMongoose {
     const deleted = await this.#modelDb
       .findOneAndDelete({ id: condition }, { projection: { _id: 0 } })
       .lean();
-    if (!deleted) throw new Error("NOT FOUND");
+    if (!deleted) throw new ErrorNotFound("NOT FOUND");
     delete deleted._id;
     return deleted;
   }

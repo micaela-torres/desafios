@@ -1,4 +1,5 @@
-import { Uid } from "../utils/UiD.js";
+import { ErrorInvalidArgument } from "../error/errors.model.js";
+import { Uid } from "../../utils/UiD.js";
 
 export default class Products {
   #id;
@@ -23,23 +24,27 @@ export default class Products {
     this.#category = this.validateCategory(category);
   }
 
+  //validations
+
   validatePrice(price) {
     if (typeof price !== "number" || price <= 0) {
-      throw new Error("Price must be a number greater than 0.");
+      throw new ErrorInvalidArgument("Price must be a number greater than 0.");
     }
     return price;
   }
 
   validateThumbnail(thumbnail) {
     if (typeof thumbnail !== "string") {
-      throw new Error("Thumbnail must be a string ending with .jpg or .png.");
+      throw new ErrorInvalidArgument(
+        "Thumbnail must be a string ending with .jpg or .png."
+      );
     }
     return thumbnail;
   }
 
   validateCode(code) {
-    if (typeof code !== "string" || code.length > 6) {
-      throw new Error(
+    if (typeof code !== "string" || code.length > 7) {
+      throw new ErrorInvalidArgument(
         "Code must be a string with a maximum length of 6 characters."
       );
     }
@@ -48,7 +53,7 @@ export default class Products {
 
   validateStock(stock) {
     if (typeof stock !== "number" || stock <= 0) {
-      throw new Error("Stock must be a number greater than 0.");
+      throw new ErrorInvalidArgument("Stock must be a number greater than 0.");
     }
     return stock;
   }
@@ -63,7 +68,7 @@ export default class Products {
       "PERLITAS",
     ];
     if (!allowedCategories.includes(category)) {
-      throw new Error(
+      throw new ErrorInvalidArgument(
         "Invalid category. Allowed categories: AFA, CLUBS, +SELECCIONES, RETRO, OTROS, PERLITAS."
       );
     }

@@ -1,6 +1,6 @@
 import { productsRepository } from "../../../repositories/product.repositorie.js";
 
-export async function getProductController(req, res, next) {
+export async function getProductIdController(req, res, next) {
   try {
     const producto = await productsRepository.findOneById(req.params.pid);
     console.log(producto);

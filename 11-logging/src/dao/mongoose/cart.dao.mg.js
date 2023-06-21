@@ -1,4 +1,8 @@
 import mongoose, { Schema } from "mongoose";
+import {
+  ErrorInvalidQuantity,
+  ErrorNotFound,
+} from "../../models/error/errors.model.js";
 
 function toPojo(object) {
   return JSON.parse(JSON.stringify(object));
@@ -32,13 +36,14 @@ export default class CartsMongoose {
     return pojo;
   }
 
-  async getCartbyId(cid) {
+  async getCartById(cid) {
     const cart = await this.#cartsDb.findOne({ id: cid });
-    if (!cart) throw new Error("Not Found");
+    if (!cart) throw new ErrorNotFound("Cart Not Found");
     return cart;
   }
 
   async getProductsInCartById(cid) {
+    const cart = await this.getCartById(cid)
     const populatedCart = await this.#cartsDb.aggregate([
       {
         $match: { id: cid },
@@ -72,7 +77,7 @@ export default class CartsMongoose {
   }
 
   async addProductInCart(cid, pid, qt) {
-    const cart = await this.getCartbyId(cid);
+    const cart = await this.getCartById(cid);
     const products = cart.products;
     const serchprod = products.find((p) => p.product === pid);
     if (!serchprod) {
@@ -85,7 +90,7 @@ export default class CartsMongoose {
   }
 
   async delProductInCart(cid, pid) {
-    const cart = await this.getCartbyId(cid);
+    const cart = await this.getCartById(cid);
     const products = cart.products;
     const deleter = products.filter((p) => p.product !== pid);
     await this.#cartsDb.findByIdAndUpdate(cart._id, { products: deleter });
@@ -93,37 +98,35 @@ export default class CartsMongoose {
   }
 
   async updateCart(cid, updcart) {
-    const cart = await this.getCartbyId(cid);
-    console.log(cart);
-    console.log(updcart);
+    const cart = await this.getCartById(cid);
     const updated = await this.#cartsDb.findByIdAndUpdate(cart._id, {
       products: updcart,
     });
     return updated;
   }
 
-  async updProductinCart(cid, pid, updquantity) {
-    const cart = await this.getCartbyId(cid);
+  async updProductInCart(cid, pid, updquantity) {
+    const cart = await this.getCartById(cid);
     const products = cart.products;
     const serchprod = products.find((p) => p.product === pid);
     if (!serchprod) {
-      throw new Error("Not Found");
+      throw new ErrorNotFound("Not Found");
     }
     if (isNaN(updquantity.quantity) || updquantity.quantity < 0) {
-      throw new Error("Invalid Quantity");
+      throw new ErrorInvalidQuantity("Invalid Quantity");
     }
     serchprod.quantity = updquantity.quantity;
     await this.#cartsDb.findByIdAndUpdate(cart._id, { products: products });
   }
 
   async delAllProductsInCart(cid) {
-    const cart = await this.getCartbyId(cid);
+    const cart = await this.getCartById(cid);
     await this.#cartsDb.findByIdAndUpdate(cart._id, { products: [] });
     return cart;
   }
 
   async deleteCart(cid) {
-    const cart = await this.getCartbyId(cid);
+    const cart = await this.getCartById(cid);
     await this.#cartsDb.findByIdAndRemove(cart._id);
   }
 }

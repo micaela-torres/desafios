@@ -1,6 +1,6 @@
 import { cartRepository } from "../repositories/cart.repositrie.js";
-import Users from "../models/Users.model.js";
-import Carts from "../models/carts.model.js";
+import Users from "../models/entities/Users.model.js";
+import Carts from "../models/entities/Cart.model.js";
 import { userRepository } from "../repositories/users.repository.js";
 
 class UserService {
@@ -28,9 +28,7 @@ class UserService {
             : "user",
         cart: UserData.cart,
       };
-      console.log(`data : ${JSON.stringify(datasuser)}`);
       const user = new Users(datasuser);
-      console.log(`user:${JSON.stringify(user)}`);
       const registrado = await this.repositorie.add(user.dto());
       return registrado;
     } catch (error) {

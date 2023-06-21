@@ -14,8 +14,9 @@ import { PORT } from "../config/config.js";
 import { COOKIE_KEY } from "../config/config.js";
 
 //mid
-import { errorFn } from "../mid/error.js";
+import { apiErrorHandler } from "../mid/error.handler.js";
 import { socketFn } from "../mid/soketio.rt.js";
+import { socketChat } from "../mid/socketio.chat.js";
 //DDBB
 import { conectar } from "../dao/mongoose/mongoose.js";
 
@@ -39,16 +40,18 @@ app.set("view engine", "handlebars");
 
 app.use("/api", apiRouter);
 app.use("/", viewsRouter);
-app.use(errorFn);
+app.use(apiErrorHandler);
 
 const httpServer = app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
   console.log("Path to login view: ", "http://localhost:8080/");
+
 });
 
 export const io = new socketIOServer(httpServer);
 
 io.on("connection", async (clientSocket) => {
   console.log(`New connection: ${clientSocket.id}`);
+  await socketChat(clientSocket);
   await socketFn();
 });

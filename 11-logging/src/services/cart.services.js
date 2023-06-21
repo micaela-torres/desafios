@@ -1,3 +1,7 @@
+import {
+  ErrorInvalidQuantity,
+  ErrorNotFound,
+} from "../models/error/errors.model.js";
 import { cartRepository } from "../repositories/cart.repositrie.js";
 import { productsRepository } from "../repositories/product.repositorie.js";
 
@@ -10,11 +14,12 @@ class CartService {
       const prod = await productsRepository.findOneById(dataprod);
       datas = prod.stock;
     } catch (error) {
-      if (error.message === "Not Found") throw new Error("Invalid Product");
+      if (error.description === "Not Found")
+        throw new ErrorNotFound("Invalid Product");
     }
     try {
       let cartqt = 0;
-      const cart = await cartRepository.getCartbyId(datacart);
+      const cart = await cartRepository.getCartById(datacart);
       const productsincart = cart.products;
       const producttocharge = productsincart.find(
         (p) => p.product === dataprod
@@ -23,7 +28,8 @@ class CartService {
         cartqt = producttocharge.quantity;
       }
 
-      if (datas < cartqt + Number(dataq)) throw new Error("Quiantity Exceeded");
+      if (datas < cartqt + Number(dataq))
+        throw new ErrorInvalidQuantity("Quantity Exceeded");
       const product = await cartRepository.addProductInCart(
         datacart,
         dataprod,
@@ -31,9 +37,10 @@ class CartService {
       );
       return product;
     } catch (error) {
-      if (error.message === "Not Found") throw new Error("Invalid Cart");
-      if (error.message === "Quiantity Exceeded")
-        throw new Error("Not Enough Stock");
+      if (error.description === "Cart Not Found")
+        throw new ErrorNotFound("Invalid Cart");
+      if (error.description === "Quantity Exceeded")
+        throw new ErrorInvalidQuantity("Not Enough Stock");
     }
   }
 
@@ -41,21 +48,23 @@ class CartService {
     try {
       await productsRepository.findOneById(dataprod);
     } catch (error) {
-      if (error.message === "Not Found") throw new Error("Invalid Product");
+      if (error.description === "Not Found")
+        throw new ErrorNotFound("Invalid Product");
     }
     try {
-      const productupd = await cartRepository.updProductinCart(
+      const productupd = await cartRepository.updProductInCart(
         datacart,
         dataprod,
         info
       );
       if (productupd?.stock < dataq) {
-        throw new Error("Invalid Quiantity");
+        throw new ErrorInvalidQuantity("Invalid Quantity");
       }
     } catch (error) {
-      if (error.message === "Not Found") throw new Error("Invalid Cart");
-      if (error.mensaje === "Invalid Quiantity")
-        throw new Error("Not Enough Stock");
+      if (error.description === "Cart Not Found")
+        throw new ErrorNotFound("Invalid Cart");
+      if (error.description === "Invalid Quantity")
+        throw new ErrorInvalidQuantity("Not Enough Stock");
     }
   }
 
@@ -63,13 +72,15 @@ class CartService {
     try {
       await productsRepository.findOneById(dataprod);
     } catch (error) {
-      if (error.message === "Not Found") throw new Error("Invalid Product");
+      if (error.description === "Not Found")
+        throw new ErrorNotFound("Invalid Product");
     }
     try {
       const deleter = await cartRepository.delProductInCart(datacart, dataprod);
       return deleter;
     } catch (error) {
-      if (error.message === "Not Found") throw new Error("Invalid Cart");
+      if (error.description === "Cart Not Found")
+        throw new ErrorNotFound("Invalid Cart");
     }
   }
 }

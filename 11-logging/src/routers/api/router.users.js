@@ -4,7 +4,7 @@ import { getUsersController } from "../../controllers/api/users/controller.getus
 import { authJwtApi } from "../../mid/authentication.js";
 import { soloRol } from "../../mid/authorization.js";
 
-export const appUsers = Router();
+export const usersRouter = Router();
 
-appUsers.post("/", postUsuarios);
-appUsers.get("/", authJwtApi, soloRol("super-admin"), getUsersController);
+usersRouter.post("/", postUsuarios);
+usersRouter.get("/", authJwtApi, soloRol("super-admin"), getUsersController);

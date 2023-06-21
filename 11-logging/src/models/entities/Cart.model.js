@@ -1,4 +1,5 @@
-import { Uid } from "../utils/UiD.js";
+import { ErrorInvalidArgument } from "../error/errors.model.js";
+import { Uid } from "../../utils/UiD.js";
 
 export default class Carts {
   #id;
@@ -12,7 +13,7 @@ export default class Carts {
   // Validación de id
   validateId(id) {
     if (!id) {
-      throw new Error("ID is required");
+      throw new ErrorInvalidArgument("ID is required");
     }
     return id;
   }
@@ -20,7 +21,7 @@ export default class Carts {
   // Validación de products
   validateProducts(products) {
     if (!Array.isArray(products)) {
-      throw new Error("Products must be an array");
+      throw new ErrorInvalidArgument("Products must be an array");
     }
     return products;
   }

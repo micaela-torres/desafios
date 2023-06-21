@@ -1,5 +1,6 @@
-import { Uid } from "../utils/UiD.js";
-import { hasher } from "../utils/hasher.js";
+import { ErrorInvalidArgument } from "../error/errors.model.js";
+import { Uid } from "../../utils/UiD.js";
+import { hasher } from "../../utils/hasher.js";
 
 export default class Users {
   #id;
@@ -26,7 +27,7 @@ export default class Users {
     this.#first_name = this.validateFirstName(first_name);
     this.#last_name = this.validateLastName(last_name);
     this.#age = this.validateAge(age);
-    this.#password = this.validatePassword(password);
+    this.#password = this.validatePassword(hasher(password));
     this.#role = this.validateRole(role);
     this.#cart = this.validateCart(cart);
   }
@@ -36,7 +37,7 @@ export default class Users {
   // Validación de id
   validateId(id) {
     if (!id) {
-      throw new Error("ID is required");
+      throw new ErrorInvalidArgument("ID is required");
     }
     return id;
   }
@@ -44,7 +45,7 @@ export default class Users {
   // Validación de email
   validateEmail(email) {
     if (!email) {
-      throw new Error("Email is required");
+      throw new ErrorInvalidArgument("Email is required");
     }
     return email;
   }
@@ -52,7 +53,7 @@ export default class Users {
   // Validación de first_name
   validateFirstName(first_name) {
     if (!first_name) {
-      throw new Error("First name is required");
+      throw new ErrorInvalidArgument("First name is required");
     }
     return first_name;
   }
@@ -60,7 +61,7 @@ export default class Users {
   // Validación de last_name
   validateLastName(last_name) {
     if (!last_name) {
-      throw new Error("Last name is required");
+      throw new ErrorInvalidArgument("Last name is required");
     }
     return last_name;
   }
@@ -68,13 +69,13 @@ export default class Users {
   // Validación de age
   validateAge(age) {
     if (!age) {
-      throw new Error("Age is required");
+      throw new ErrorInvalidArgument("Age is required");
     }
     if (typeof age !== "number") {
-      throw new Error("Age must be a number");
+      throw new ErrorInvalidArgument("Age must be a number");
     }
     if (age < 14) {
-      throw new Error("Age must be at least 14");
+      throw new ErrorInvalidArgument("Age must be at least 14");
     }
     return age;
   }
@@ -82,7 +83,7 @@ export default class Users {
   // Validación de password
   validatePassword(password) {
     if (!password) {
-      throw new Error("Password is required");
+      throw new ErrorInvalidArgument("Password is required");
     }
     return password;
   }
@@ -91,7 +92,7 @@ export default class Users {
   validateRole(role) {
     const validRoles = ["super-admin", "admin", "user"];
     if (!validRoles.includes(role)) {
-      throw new Error("Invalid role");
+      throw new ErrorInvalidArgument("Invalid role");
     }
     return role;
   }
@@ -99,7 +100,7 @@ export default class Users {
   // Validación de cart
   validateCart(cart) {
     if (!cart) {
-      throw new Error("cart is required");
+      throw new ErrorInvalidArgument("cart is required");
     }
     return cart;
   }
@@ -150,6 +151,16 @@ export default class Users {
       password: this.#password,
       role: this.#role,
       cart: this.#cart,
+    };
+  }
+
+  dtoclose() {
+    return {
+      email: this.#email,
+      first_name: this.#first_name,
+      last_name: this.#last_name,
+      age: this.#age,
+      role: this.#role,
     };
   }
 }

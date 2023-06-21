@@ -1,4 +1,8 @@
+import { mmg } from "../../dao/mongoose/messages.dao.mg.js";
+import { ticketsRepository } from "../../repositories/ticket.repository.js";
 import { productsRepository } from "../../repositories/product.repositorie.js";
+import { cartRepository } from "../../repositories/cart.repositrie.js";
+import Handlebars from "handlebars";
 
 import {
   PATH_NEW_PRODUCT,
@@ -6,8 +10,14 @@ import {
   PATH_CARTS,
   PATH_LOGIN,
   PATH_REGIS,
+  PATH_CHAT,
+  PATH_TICKET,
 } from "../../config/config.js";
-import { cmg } from "../../dao/mongoose/cart.dao.mg.js";
+
+//helper generado
+Handlebars.registerHelper("multiply", function (num1, num2) {
+  return num1 * num2;
+});
 
 export async function newProductView(req, res, next) {
   try {
@@ -38,8 +48,10 @@ export async function productView(req, res) {
   }
 
   const validrole = usrrole === "admin" || usrrole === "super-admin" ? 1 : 0;
+  const validchat = usrrole === "user" ? 1 : 0;
   res.render(PATH_PRODUCT, {
     role: validrole,
+    chat: validchat,
     cart: cartid,
     style: "style-base",
     faviconTitle: "Home",
@@ -49,7 +61,7 @@ export async function productView(req, res) {
 }
 
 export async function cartView(req, res) {
-  const products = await cmg.getProductsInCartById(req.params.cid);
+  const products = await cartRepository.getProductsInCartById(req.params.cid);
   res.render(PATH_CARTS, {
     style: "style-cart",
     faviconTitle: "Cart",
@@ -57,6 +69,18 @@ export async function cartView(req, res) {
     list: products,
     listExist: products.length > 0,
     cid: req.params.cid,
+  });
+}
+
+export async function ticketView(req, res) {
+  const ticket = await ticketsRepository.findOne({ code: req.params.tid });
+  const products = await cartRepository.getProductsInCartById(req.query.cart);
+  res.render(PATH_TICKET, {
+    style: "style-ticket",
+    faviconTitle: "Ticket",
+    Head: "Order Success",
+    list: products,
+    ticket: ticket,
   });
 }
 
@@ -71,5 +95,13 @@ export async function regisView(req, res) {
   res.render(PATH_REGIS, {
     style: "style-register",
     faviconTitle: "Regis",
+  });
+}
+
+export async function chatView(req, res) {
+  const mensajes = await mmg.findMsg();
+  res.render(PATH_CHAT, {
+    faviconTitle: "Chat",
+    Head: "Chat",
   });
 }
