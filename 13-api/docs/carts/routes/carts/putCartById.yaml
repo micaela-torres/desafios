@@ -1,0 +1,59 @@
+paths:
+  /carts/{id}:
+    put:
+      summary: Edits the products in cart with given id
+      tags:
+        - Carts
+      parameters:
+        - name: id
+          in: path
+          description: path parameter takes the cart id
+          required: true
+          type: string
+        - name: pid
+          in: path
+          description: path parameter takes the product id
+          required: true
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/requestBodies/CartProducts"
+      responses:
+        "200":
+          description: Products in the cart with given id
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+              example:
+                - product:
+                    id: "8b249da4-bf67-4073-b03b-2aaf42987b8a"
+                    title: "Set de regalo sally"
+                    description: "contiene un shampoo y una colonia"
+                    price: 1000
+                    thumbnail:
+                      - "https://http2.mlstatic.com/D_NQ_NP_865222-MLA70080164595_062023-O.webp"
+                    code: "23"
+                    stock: 12
+                    status: true
+                    category: "Algabo"
+                    owner: "super-admin"
+                  quantity: 3
+                - product:
+                    id: "efgh5678"
+                    title: "Set de regalo spider-man"
+                    description: "fdgfdgdf"
+                    price: 9999
+                    thumbnail:
+                      - "https://www.rimoldimayorista.com.ar/datos/uploads/mod_catalogo/31308/algabo-body-splash-sh-1-6195436d4c600.png"
+                    code: "EXMPL1"
+                    stock: 50
+                    status: true
+                    category: "OTROS"
+                    owner: "admin"
+                  quantity: 1
+        "404":
+          description: cart not found Error

@@ -1,0 +1,51 @@
+# NewProduct
+components:
+  requestBodies:
+    NewProduct:
+      type: object
+      required:
+        - title
+        - description
+        - price
+        - thumbnail
+        - code
+        - stock
+        - category
+        - owner
+      properties:
+        title:
+          type: string
+          description: The title of the product.
+        description:
+          type: string
+          description: The description of the product.
+        price:
+          type: number
+          description: The price of the product.
+        thumbnail:
+          type: string
+          description: The URLs of the product thumbnails.
+        code:
+          type: string
+          description: The code of the product.
+          maxLength: 7
+        stock:
+          type: number
+          description: The stock quantity of the product.
+        category:
+          type: string
+          description: The category of the product.
+          enum:
+            - Algabo
+        owner:
+          type: string
+          description: The owner of the product.
+      example:
+        title: "set de regalo zombie"
+        description: ""
+        price: 25000
+        thumbnail: "https://http2.mlstatic.com/D_NQ_NP_783369-MLA50710247198_072022-O.webp"
+        code: 31"
+        stock: 10
+        category: "Algabo"
+        owner: "super-admin"

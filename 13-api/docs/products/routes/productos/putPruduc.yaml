@@ -1,0 +1,46 @@
+paths:
+  /products/{id}:
+    put:
+      summary: Edit the product with given id
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          description: path parameter takes the product id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/requestBodies/NewProduct"
+            example:
+              title: "set de regalo zombie"
+              description: ""
+              price: 25000
+              thumbnail: "https://http2.mlstatic.com/D_NQ_NP_783369-MLA50710247198_072022-O.webp"
+              code: 31"
+              stock: 10
+              category: "Algabo"
+              owner: "super-admin"
+      responses:
+        "200":
+          description: The product with given id has been edited
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+              example:
+                title: "set de regalo zombie"
+                description: ""
+                price: 25000
+                thumbnail: "https://http2.mlstatic.com/D_NQ_NP_783369-MLA50710247198_072022-O.webp"
+                code: 31"
+                stock: 10
+                category: "Algabo"
+                owner: "super-admin"
+        "404":
+          description: Product not found Error

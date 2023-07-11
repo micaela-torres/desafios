@@ -1,0 +1,37 @@
+# Cart
+components:
+  schemas:
+    Cart:
+      type: object
+      required:
+        - id
+        - products
+      properties:
+        id:
+          type: string
+          description: The auto-generated id of the Cart.
+        products:
+          type: array
+          items:
+            product:
+              type: object
+              properties:
+                id:
+                  type: string
+            quantity:
+              type: number
+          default: []
+      example:
+        - product:
+            id: "8b249da4-bf67-4073-b03b-2aaf42987b8a"
+            title: "Set de regalo sally"
+            description: "contiene un shampoo y una colonia"
+            price: 1000
+            thumbnail:
+              - "https://http2.mlstatic.com/D_NQ_NP_865222-MLA70080164595_062023-O.webp"
+            code: "23"
+            stock: 12
+            status: true
+            category: "Algabo"
+            owner: "super-admin"
+          quantity: 3

@@ -1,0 +1,76 @@
+components:
+  requestBodies:
+    CartProducts:
+      type: array
+      items:
+        type: object
+        properties:
+          product:
+            type: object
+            properties:
+              _id:
+                type: string
+              id:
+                type: string
+              title:
+                type: string
+                description: The title of the product.
+              description:
+                type: string
+                description: The description of the product.
+              price:
+                type: number
+                description: The price of the product.
+              thumbnail:
+                type: array
+                items:
+                  type: string
+                description: The URLs of the product thumbnails.
+              code:
+                type: string
+                description: The code of the product.
+                maxLength: 7
+              stock:
+                type: number
+                description: The stock quantity of the product.
+              status:
+                type: boolean
+                description: The status of the product.
+              category:
+                type: string
+                description: The category of the product.
+                enum:
+                  - Algabo
+              owner:
+                type: string
+                description: The owner of the product.
+          quantity:
+            type: number
+            description: The quantity of the product in the cart.
+      example:
+        - product:
+          id: "8b249da4-bf67-4073-b03b-2aaf42987b8a"
+          title: "Set de regalo sally"
+          description: "contiene un shampoo y una colonia"
+          price: 1000
+          thumbnail:
+            - "https://http2.mlstatic.com/D_NQ_NP_865222-MLA70080164595_062023-O.webp"
+          code: "23"
+          stock: 12
+          status: true
+          category: "Algabo"
+          owner: "super-admin"
+        quantity: 3
+        - product:
+            id: "efgh5678"
+            title: "Set de regalo spider-man"
+            description: "fdgfdgdf"
+            price: 9999
+            thumbnail:
+              - "https://www.rimoldimayorista.com.ar/datos/uploads/mod_catalogo/3algabo-body-splash-sh-1-6195436d4c600.png"
+            code: "EXMPL1"
+            stock: 50
+            status: true
+            category: "OTROS"
+            owner: "admin"
+          quantity: 1
