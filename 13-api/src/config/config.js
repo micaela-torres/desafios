@@ -17,12 +17,12 @@ const PERSISTENCIA = process.env.PERSISTENCIA;
 const MONGODB_CNX_STR = process.env.MONGODB_CNX_STR;
 
 //auth
-const JWT_PRIVATE_KEY = "bocabocaabocaaa";
-const COOKIE_KEY = "joacode19";
+const JWT_PRIVATE_KEY = "pioneta";
+const COOKIE_KEY = "micatorres21";
 
-const CLIENTID_GIT = "Iv1.833d173dd56e2b23";
+const CLIENTID_GIT = 'Iv1.3da744d0448f60e8';
 
-const CLIENTSCR_GIT = "954d848baebd01377150d426d3f89367eafe345f";
+const CLIENTSCR_GIT = "37fe03a13bcf096201bb0084ec76e63125111e2a";
 
 const SESSION_SECRET = "elquenoabrelacabezanolecreceelcorazon";
 
